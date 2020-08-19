@@ -38,6 +38,10 @@ public class RenderHandler {
         }
     }
 
+    public void renderSprite(Sprite sprite, int xPosition, int yPosition, int xZoom, int yZoom) {
+        renderPixelsArrays(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPosition, yPosition, xZoom, yZoom);
+    }
+
     public void renderPixelsArrays(int[] renderPixels, int renderWidth, int renderHeight, int xPosition, int yPosition, int xZoom, int yZoom) {
         for (int y = 0; y < renderHeight; y++) {
             for (int x = 0; x < renderWidth; x++) {
