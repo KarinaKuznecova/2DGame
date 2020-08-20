@@ -32,7 +32,7 @@ public class RenderHandler {
     }
 
     public void renderRectangle(Rectangle rectangle, int xZoom, int yZoom) {
-        int [] rectanglePixels = rectangle.getPixels();
+        int[] rectanglePixels = rectangle.getPixels();
         if (rectanglePixels != null) {
             renderPixelsArrays(rectanglePixels, rectangle.getWidth(), rectangle.getHeight(), rectangle.getX(), rectangle.getY(), xZoom, yZoom);
         }
@@ -79,5 +79,9 @@ public class RenderHandler {
                 y >= camera.getY() &&
                 x <= camera.getX() + camera.getWidth() &&
                 y <= camera.getY() + camera.getHeight();
+    }
+
+    public Rectangle getCamera() {
+        return camera;
     }
 }

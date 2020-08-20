@@ -5,7 +5,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class Game extends JFrame implements Runnable {
 
@@ -15,9 +14,11 @@ public class Game extends JFrame implements Runnable {
     private BufferedImage bufferedImage;
     private Rectangle testRectangle = new Rectangle(50, 50, 100, 100);
     private Rectangle testRectangle2 = new Rectangle(100, 90, 100, 100);
-    private Sprite testSprite;
     private SpriteSheet sheet;
     private Tiles tiles;
+    private GameMap gameMap;
+    private GameObject[] gameObjects;
+    private Player player;
 
     public Game() {
         //Make our program shutdown when we exit out.
@@ -45,13 +46,19 @@ public class Game extends JFrame implements Runnable {
         sheet = new SpriteSheet(bufferedImage);
         sheet.loadSprites(16, 16, 0);
 
-        File file = new File("src/resources/Tile.txt");
-        System.out.println(file.getPath());
-        System.out.println(file.getAbsolutePath());
-        tiles = new Tiles(file, sheet);
+        //load tiles
+        tiles = new Tiles(new File("src/resources/Tile.txt"), sheet);
 
-//        testSprite = sheet.getSprite(1, 1);
+        //load map
+        gameMap = new GameMap(new File("src/resources/Map.txt"), tiles);
 
+        //TODO: make it prettier
+        //load objects
+        gameObjects = new GameObject[1];
+        player = new Player();
+        gameObjects[0] = player;
+
+        //to remove later
         testRectangle2.generateGraphicsAsInVideo(5, 1234);
         testRectangle.generateGraphics(5, 123456);
     }
@@ -67,10 +74,15 @@ public class Game extends JFrame implements Runnable {
         Graphics graphics = bufferStrategy.getDrawGraphics();
         super.paint(graphics);
 
-//        renderer.renderSprite(testSprite, 0, 0, 5, 5);
-        tiles.renderTile(0, renderer, 0, 0, 3, 3);
+        gameMap.render(renderer, 3, 3);
+
         renderer.renderRectangle(testRectangle2, 1, 1);
         renderer.renderRectangle(testRectangle, 1, 1);
+
+        for (GameObject gameObject : gameObjects) {
+            gameObject.render(renderer, 3, 3);
+        }
+
         renderer.render(graphics);
 
         graphics.dispose();
@@ -98,7 +110,9 @@ public class Game extends JFrame implements Runnable {
     }
 
     public void update() {
-
+        for (GameObject object : gameObjects) {
+            object.update(this);
+        }
     }
 
     private BufferedImage loadImage(String path) {

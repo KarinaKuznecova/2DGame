@@ -1,4 +1,5 @@
 public class Rectangle {
+
     private int x;
     private int y;
     private int width;
@@ -73,10 +74,9 @@ public class Rectangle {
         pixels = new int[width * height];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (i < borderWidth || i > height - borderWidth || j < borderWidth || j > width - borderWidth) {
+                if (i < borderWidth || i >= height - borderWidth || j < borderWidth || j >= width - borderWidth) {
                     pixels[i + j * width] = color;
-                }
-                else {
+                } else {
                     pixels[i + j * width] = Game.alpha;
                 }
             }
