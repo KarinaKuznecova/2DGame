@@ -5,7 +5,7 @@ public class Player implements GameObject {
 
     public Player() {
         playerRectangle = new Rectangle(32, 16, 16, 16);
-        playerRectangle.generateGraphics(2, 12345);
+        playerRectangle.generateGraphics(2, 1234567);
     }
 
     @Override
@@ -15,6 +15,28 @@ public class Player implements GameObject {
 
     @Override
     public void update(Game game) {
+        KeyboardListener keyboardListener = game.getKeyboardListener();
 
+        if (keyboardListener.up()) {
+            playerRectangle.setY(playerRectangle.getY() - speed);
+        }
+
+        if (keyboardListener.down()) {
+            playerRectangle.setY(playerRectangle.getY() + speed);
+        }
+
+        if (keyboardListener.left()) {
+            playerRectangle.setX(playerRectangle.getX() - speed);
+        }
+
+        if (keyboardListener.right()) {
+            playerRectangle.setX(playerRectangle.getX() + speed);
+        }
+        updateCamera(game.getRenderer().getCamera());
+    }
+
+    public void updateCamera(Rectangle camera) {
+        camera.setX(playerRectangle.getX() - (camera.getWidth() / 2));
+        camera.setY(playerRectangle.getY() - (camera.getHeight() / 2));
     }
 }

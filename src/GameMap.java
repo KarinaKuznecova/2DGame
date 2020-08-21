@@ -40,22 +40,22 @@ public class GameMap {
     }
 
     public void render(RenderHandler renderer, int xZoom, int yZoom) {
-        int xIncrement = 16 * xZoom;
-        int yIncrement = 16 * yZoom;
+        int tileWidth = 16 * xZoom;
+        int tileHeight = 16 * yZoom;
 
-//        if (fillTileId >= 0) {
-//            Rectangle camera = renderer.getCamera();
-//            MappedTile mappedTile = tileList.get(fillTileId);
-//            for (int i = 0; i < camera.getHeight(); ) {
-//                for (int j = 0; j < camera.getWidth(); ) {
-//
-//                }
-//            }
-//        }
+        if (fillTileId >= 0) {
 
-        for (int i = 0; i < tileList.size(); i++) {
-            MappedTile mappedTile = tileList.get(i);
-            tiles.renderTile(mappedTile.getId(), renderer, mappedTile.getX() * xIncrement, mappedTile.getY() * yIncrement, xZoom, yZoom);
+            Rectangle camera = renderer.getCamera();
+
+            for (int i = camera.getY() - tileHeight - (camera.getY() % tileHeight); i < camera.getY() + camera.getHeight(); i+= tileHeight) {
+                for (int j = camera.getX() - tileWidth - (camera.getX() % tileWidth); j < camera.getX() + camera.getWidth(); j += tileWidth) {
+                    tiles.renderTile(fillTileId, renderer, j, i, xZoom, yZoom);
+                }
+            }
+        }
+
+        for (MappedTile mappedTile : tileList) {
+            tiles.renderTile(mappedTile.getId(), renderer, mappedTile.getX() * tileWidth, mappedTile.getY() * tileHeight, xZoom, yZoom);
         }
     }
 

@@ -11,14 +11,12 @@ public class Game extends JFrame implements Runnable {
     public static final int alpha = 0xFF80FF00;
     private Canvas canvas = new Canvas();
     private RenderHandler renderer;
-    private BufferedImage bufferedImage;
-    private Rectangle testRectangle = new Rectangle(50, 50, 100, 100);
-    private Rectangle testRectangle2 = new Rectangle(100, 90, 100, 100);
     private SpriteSheet sheet;
     private Tiles tiles;
     private GameMap gameMap;
     private GameObject[] gameObjects;
     private Player player;
+    private KeyboardListener keyboardListener = new KeyboardListener();
 
     public Game() {
         //Make our program shutdown when we exit out.
@@ -42,7 +40,7 @@ public class Game extends JFrame implements Runnable {
         renderer = new RenderHandler(getWidth(), getHeight());
 
         //load assets
-        bufferedImage = loadImage("resources/img/Tiles.png");
+        BufferedImage bufferedImage = loadImage("resources/img/Tiles.png");
         sheet = new SpriteSheet(bufferedImage);
         sheet.loadSprites(16, 16, 0);
 
@@ -58,9 +56,9 @@ public class Game extends JFrame implements Runnable {
         player = new Player();
         gameObjects[0] = player;
 
-        //to remove later
-        testRectangle2.generateGraphicsAsInVideo(5, 1234);
-        testRectangle.generateGraphics(5, 123456);
+        //adding listeners
+        canvas.addKeyListener(keyboardListener);
+        canvas.addFocusListener(keyboardListener);
     }
 
     public static void main(String[] args) {
@@ -76,9 +74,6 @@ public class Game extends JFrame implements Runnable {
 
         gameMap.render(renderer, 3, 3);
 
-        renderer.renderRectangle(testRectangle2, 1, 1);
-        renderer.renderRectangle(testRectangle, 1, 1);
-
         for (GameObject gameObject : gameObjects) {
             gameObject.render(renderer, 3, 3);
         }
@@ -87,19 +82,22 @@ public class Game extends JFrame implements Runnable {
 
         graphics.dispose();
         bufferStrategy.show();
+        renderer.clear();
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         long lastTime = System.nanoTime(); //long 2^63
         double nanoSecondConversion = 1000000000.0 / 60; //60 frames per second
         double changeInSeconds = 0;
 
-        while (true) {
+        while(true)
+        {
             long now = System.nanoTime();
 
             changeInSeconds += (now - lastTime) / nanoSecondConversion;
-            while (changeInSeconds >= 1) {
+            while(changeInSeconds >= 1) {
                 update();
                 changeInSeconds--;
             }
@@ -107,6 +105,7 @@ public class Game extends JFrame implements Runnable {
             render();
             lastTime = now;
         }
+
     }
 
     public void update() {
@@ -125,5 +124,13 @@ public class Game extends JFrame implements Runnable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public KeyboardListener getKeyboardListener() {
+        return keyboardListener;
+    }
+
+    public RenderHandler getRenderer() {
+        return renderer;
     }
 }

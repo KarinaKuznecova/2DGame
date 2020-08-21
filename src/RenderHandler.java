@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.Arrays;
 
 public class RenderHandler {
 
@@ -12,12 +13,10 @@ public class RenderHandler {
         //Create a BufferedImage that will represent our view.
         view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+        camera = new Rectangle(0, 0, width, height);
+
         //Create an array for pixels
         pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
-
-        camera = new Rectangle(0, 0, width, height);
-//        camera.setX(-100);
-//        camera.setY(-30);
     }
 
     // renders our pixels to the screen
@@ -83,5 +82,9 @@ public class RenderHandler {
 
     public Rectangle getCamera() {
         return camera;
+    }
+
+    public void clear() {
+        Arrays.fill(pixels, 0);
     }
 }
