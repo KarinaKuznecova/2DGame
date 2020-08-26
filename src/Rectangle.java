@@ -77,7 +77,7 @@ public class Rectangle {
                 if (i < borderWidth || i >= height - borderWidth || j < borderWidth || j >= width - borderWidth) {
                     pixels[i + j * width] = color;
                 } else {
-                    pixels[i + j * width] = Game.alpha;
+                    pixels[i + j * width] = Game.ALPHA;
                 }
             }
         }

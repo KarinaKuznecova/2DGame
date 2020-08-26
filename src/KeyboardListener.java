@@ -7,11 +7,21 @@ public class KeyboardListener implements KeyListener, FocusListener {
 
     public boolean[] keys = new boolean[120];
 
+    private Game game;
+
+    public KeyboardListener(Game game)
+    {
+        this.game = game;
+    }
+
     @Override
     public void keyPressed(KeyEvent event) {
         int keyCode = event.getKeyCode();
         if (keyCode < keys.length) {
             keys[keyCode] = true;
+        }
+        if(keys[KeyEvent.VK_CONTROL]) {
+            game.handleCTRL(keys);
         }
     }
 

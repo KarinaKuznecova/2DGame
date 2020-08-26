@@ -4,7 +4,7 @@ public class Player implements GameObject {
     int speed = 10;
 
     public Player() {
-        playerRectangle = new Rectangle(32, 16, 16, 16);
+        playerRectangle = new Rectangle(32, 16, Game.TILE_SIZE, Game.TILE_SIZE);
         playerRectangle.generateGraphics(2, 1234567);
     }
 

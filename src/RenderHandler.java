@@ -66,7 +66,7 @@ public class RenderHandler {
     }
 
     private boolean isAlphaColor(int pixel) {
-        return pixel == Game.alpha;
+        return pixel == Game.ALPHA;
     }
 
     private boolean isInGlobalRange(int pixelIndex) {
