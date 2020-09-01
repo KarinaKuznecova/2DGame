@@ -54,4 +54,9 @@ public class SpriteSheet {
     public BufferedImage getImage() {
         return image;
     }
+
+    public Sprite[] getLoadedSprites()
+    {
+        return loadedSprites;
+    }
 }

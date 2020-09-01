@@ -20,7 +20,7 @@ public class MouseEventListener implements MouseListener, MouseMotionListener {
         if (event.getButton() == MouseEvent.BUTTON1) {
             game.leftClick(event.getX(), event.getY());
         }
-        if (event.getButton() == MouseEvent.BUTTON2) {
+        if (event.getButton() == MouseEvent.BUTTON3) {
             game.rightClick(event.getX(), event.getY());
         }
     }

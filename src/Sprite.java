@@ -6,6 +6,9 @@ public class Sprite {
     private int height;
     private int[] pixels;
 
+    public Sprite() {
+    }
+
     public Sprite(SpriteSheet sheet, int startX, int startY, int width, int height) {
         this.width = width;
         this.height = height;

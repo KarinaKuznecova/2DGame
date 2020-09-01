@@ -60,8 +60,9 @@ public class GameMap {
                 }
             }
         }
-
-        for (MappedTile mappedTile : tileList) {
+        // with for-each loop there is ConcurrentModificationException often, but with this loop everything works fine
+        for (int i = 0; i < tileList.size(); i++ ){
+            MappedTile mappedTile = tileList.get(i);
             tiles.renderTile(mappedTile.getId(), renderer, mappedTile.getX() * tileWidth, mappedTile.getY() * tileHeight, xZoom, yZoom);
         }
     }
@@ -81,7 +82,7 @@ public class GameMap {
     }
 
     public void removeTile(int tileX, int tileY) {
-
+        tileList.removeIf(tile -> tile.getX() == tileX && tile.getY() == tileY);
     }
 
     public void saveMap() {

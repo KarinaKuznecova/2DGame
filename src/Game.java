@@ -10,16 +10,21 @@ import java.io.IOException;
 public class Game extends JFrame implements Runnable {
 
     public static final int ALPHA = 0xFF80FF00;
-    public static final int TILE_SIZE = 16;
-    public static final int ZOOM = 3;
+    public static final int TILE_SIZE = 32;
+    public static final int ZOOM = 2;
 
     private Canvas canvas = new Canvas();
     private RenderHandler renderer;
+
     private SpriteSheet sheet;
+    private SpriteSheet playerSheet;
     private Tiles tiles;
     private GameMap gameMap;
     private GameObject[] gameObjects;
     private Player player;
+
+    private AnimatedSprite animationTest;
+
     private KeyboardListener keyboardListener = new KeyboardListener(this);
     private MouseEventListener mouseEventListener = new MouseEventListener(this);
 
@@ -45,9 +50,15 @@ public class Game extends JFrame implements Runnable {
         renderer = new RenderHandler(getWidth(), getHeight());
 
         //load assets
-        BufferedImage bufferedImage = loadImage("resources/img/Tiles.png");
+        BufferedImage bufferedImage = loadImage("resources/img/terrain.png");
         sheet = new SpriteSheet(bufferedImage);
         sheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
+
+        // loading player animated image
+        BufferedImage playerSheetImage = loadImage("resources/img/betty.png");
+        playerSheet = new SpriteSheet(playerSheetImage);
+        playerSheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
+        AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
 
         //load tiles
         tiles = new Tiles(new File("src/resources/Tile.txt"), sheet);
@@ -57,9 +68,16 @@ public class Game extends JFrame implements Runnable {
 
         //TODO: make it prettier
         //load objects
-        gameObjects = new GameObject[1];
-        player = new Player();
+        gameObjects = new GameObject[2];
+        player = new Player(playerAnimations);
         gameObjects[0] = player;
+
+        Rectangle[] spritePositions = new Rectangle[4];
+        for (int i = 0; i < spritePositions.length; i++) {
+            spritePositions[i] = new Rectangle(0, (TILE_SIZE * i), TILE_SIZE, TILE_SIZE);
+        }
+        animationTest = new AnimatedSprite(playerSheet, spritePositions, 20);
+        gameObjects[1] = animationTest;
 
         //adding listeners
         canvas.addKeyListener(keyboardListener);
@@ -85,6 +103,7 @@ public class Game extends JFrame implements Runnable {
             gameObject.render(renderer, ZOOM, ZOOM);
         }
 
+        renderer.renderSprite(animationTest, 30, 30, ZOOM, ZOOM);
         renderer.render(graphics);
 
         graphics.dispose();
@@ -131,17 +150,15 @@ public class Game extends JFrame implements Runnable {
         return null;
     }
 
-    public void leftClick(int x, int y)
-    {
-        x = (int) Math.floor((x + renderer.getCamera().getX())/(16.0 * ZOOM));
-        y = (int) Math.floor((y + renderer.getCamera().getY())/(16.0 * ZOOM));
+    public void leftClick(int x, int y) {
+        x = (int) Math.floor((x + renderer.getCamera().getX()) / (32.0 * ZOOM));
+        y = (int) Math.floor((y + renderer.getCamera().getY()) / (32.0 * ZOOM));
         gameMap.setTile(x, y, 2);
     }
 
-    public void rightClick(int x, int y)
-    {
-        x = (int) Math.floor((x + renderer.getCamera().getX())/(16.0 * ZOOM));
-        y = (int) Math.floor((y + renderer.getCamera().getY())/(16.0 * ZOOM));
+    public void rightClick(int x, int y) {
+        x = (int) Math.floor((x + renderer.getCamera().getX()) / (32.0 * ZOOM));
+        y = (int) Math.floor((y + renderer.getCamera().getY()) / (32.0 * ZOOM));
         gameMap.removeTile(x, y);
     }
 

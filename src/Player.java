@@ -1,11 +1,22 @@
 public class Player implements GameObject {
 
-    Rectangle playerRectangle;
-    int speed = 10;
+    private Rectangle playerRectangle;
+    private Sprite sprite;
+    private AnimatedSprite animatedSprite = null;
+    private int speed = 10;
 
     public Player() {
         playerRectangle = new Rectangle(32, 16, Game.TILE_SIZE, Game.TILE_SIZE);
         playerRectangle.generateGraphics(2, 1234567);
+    }
+
+    public Player(Sprite playerSprite) {
+        this.sprite = playerSprite;
+        if (playerSprite instanceof AnimatedSprite) {
+            animatedSprite = (AnimatedSprite) playerSprite;
+        }
+        playerRectangle = new Rectangle(32, 16, Game.TILE_SIZE, Game.TILE_SIZE);
+        playerRectangle.generateGraphics(1, 1234567);
     }
 
     @Override
