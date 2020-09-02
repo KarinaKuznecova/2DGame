@@ -27,13 +27,12 @@ public class AnimatedSprite extends Sprite implements GameObject {
         this.endSprite = sprites.length - 1;
     }
 
-    public AnimatedSprite(SpriteSheet sheet, Rectangle[] positions, int speed)
-    {
+    public AnimatedSprite(SpriteSheet sheet, Rectangle[] positions, int speed) {
         sprites = new Sprite[positions.length];
         this.speed = speed;
         this.endSprite = positions.length - 1;
 
-        for(int i = 0; i < positions.length; i++)
+        for (int i = 0; i < positions.length; i++)
             sprites[i] = new Sprite(sheet, positions[i].getX(), positions[i].getY(), positions[i].getWidth(), positions[i].getHeight());
     }
 
@@ -66,20 +65,19 @@ public class AnimatedSprite extends Sprite implements GameObject {
     }
 
     public void incrementSprite() {
-        currentSprite++;
+        currentSprite += 4;
         if (currentSprite > endSprite) {
             currentSprite = startSprite;
         }
     }
 
-    public void setAnimationRange(int startSprite, int endSprite)
-    {
+    public void setAnimationRange(int startSprite, int endSprite) {
         this.startSprite = startSprite;
         this.endSprite = endSprite;
         reset();
     }
 
-    private void reset() {
+    public void reset() {
         counter = 0;
         currentSprite = startSprite;
     }

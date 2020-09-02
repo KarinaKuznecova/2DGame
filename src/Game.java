@@ -23,7 +23,7 @@ public class Game extends JFrame implements Runnable {
     private GameObject[] gameObjects;
     private Player player;
 
-    private AnimatedSprite animationTest;
+    private AnimatedSprite playerAnimations;
 
     private KeyboardListener keyboardListener = new KeyboardListener(this);
     private MouseEventListener mouseEventListener = new MouseEventListener(this);
@@ -58,7 +58,7 @@ public class Game extends JFrame implements Runnable {
         BufferedImage playerSheetImage = loadImage("resources/img/betty.png");
         playerSheet = new SpriteSheet(playerSheetImage);
         playerSheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
-        AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
+        playerAnimations = new AnimatedSprite(playerSheet, 5);
 
         //load tiles
         tiles = new Tiles(new File("src/resources/Tile.txt"), sheet);
@@ -68,16 +68,9 @@ public class Game extends JFrame implements Runnable {
 
         //TODO: make it prettier
         //load objects
-        gameObjects = new GameObject[2];
+        gameObjects = new GameObject[1];
         player = new Player(playerAnimations);
         gameObjects[0] = player;
-
-        Rectangle[] spritePositions = new Rectangle[4];
-        for (int i = 0; i < spritePositions.length; i++) {
-            spritePositions[i] = new Rectangle(0, (TILE_SIZE * i), TILE_SIZE, TILE_SIZE);
-        }
-        animationTest = new AnimatedSprite(playerSheet, spritePositions, 20);
-        gameObjects[1] = animationTest;
 
         //adding listeners
         canvas.addKeyListener(keyboardListener);
@@ -103,7 +96,6 @@ public class Game extends JFrame implements Runnable {
             gameObject.render(renderer, ZOOM, ZOOM);
         }
 
-        renderer.renderSprite(animationTest, 30, 30, ZOOM, ZOOM);
         renderer.render(graphics);
 
         graphics.dispose();
