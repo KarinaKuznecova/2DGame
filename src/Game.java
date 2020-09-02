@@ -143,9 +143,18 @@ public class Game extends JFrame implements Runnable {
     }
 
     public void leftClick(int x, int y) {
-        x = (int) Math.floor((x + renderer.getCamera().getX()) / (32.0 * ZOOM));
-        y = (int) Math.floor((y + renderer.getCamera().getY()) / (32.0 * ZOOM));
-        gameMap.setTile(x, y, 2);
+        Rectangle mouseRectangle = new Rectangle(x, y, 1, 1);
+        boolean stoppedChecking = false;
+
+        for (GameObject gameObject : gameObjects)
+            if (!stoppedChecking)
+//                stoppedChecking = gameObject.handleMouseClick(mouseRectangle, renderer.getCamera(), ZOOM, ZOOM);
+
+        if (!stoppedChecking) {
+            x = (int) Math.floor((x + renderer.getCamera().getX()) / (32.0 * ZOOM));
+            y = (int) Math.floor((y + renderer.getCamera().getY()) / (32.0 * ZOOM));
+            gameMap.setTile(x, y, 2);
+        }
     }
 
     public void rightClick(int x, int y) {

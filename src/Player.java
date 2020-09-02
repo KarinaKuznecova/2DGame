@@ -21,11 +21,11 @@ public class Player implements GameObject {
     @Override
     public void render(RenderHandler renderer, int xZoom, int yZoom) {
         if (animatedSprite != null) {
-            renderer.renderSprite(animatedSprite, playerRectangle.getX(), playerRectangle.getY(), xZoom, yZoom);
+            renderer.renderSprite(animatedSprite, playerRectangle.getX(), playerRectangle.getY(), xZoom, yZoom, false);
         } else if (sprite != null) {
-            renderer.renderSprite(sprite, playerRectangle.getX(), playerRectangle.getY(), xZoom, yZoom);
+            renderer.renderSprite(sprite, playerRectangle.getX(), playerRectangle.getY(), xZoom, yZoom, false);
         } else {
-            renderer.renderRectangle(playerRectangle, xZoom, yZoom);
+            renderer.renderRectangle(playerRectangle, xZoom, yZoom, false);
         }
     }
 
@@ -74,6 +74,11 @@ public class Player implements GameObject {
         if (animatedSprite != null && isMoving) {
             animatedSprite.update(game);
         }
+    }
+
+    @Override
+    public void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+
     }
 
     public void updateCamera(Rectangle camera) {

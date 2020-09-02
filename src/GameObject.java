@@ -1,9 +1,11 @@
 public interface GameObject {
 
     //should be called as often as possible
-    public void render(RenderHandler renderer, int xZoom, int yZoom);
+    void render(RenderHandler renderer, int xZoom, int yZoom);
 
     //called 60fps
-    public void update(Game game);
+    void update(Game game);
+
+    void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom);
 
 }

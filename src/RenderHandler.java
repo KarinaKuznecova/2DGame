@@ -25,23 +25,23 @@ public class RenderHandler {
     }
 
     // render our image to array of all pixels
-    public void renderImage(BufferedImage image, int xPosition, int yPosition, int xZoom, int yZoom) {
+    public void renderImage(BufferedImage image, int xPosition, int yPosition, int xZoom, int yZoom, boolean fixed) {
         int[] imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        renderPixelsArrays(imagePixels, image.getWidth(), image.getHeight(), xPosition, yPosition, xZoom, yZoom);
+        renderPixelsArrays(imagePixels, image.getWidth(), image.getHeight(), xPosition, yPosition, xZoom, yZoom, fixed);
     }
 
-    public void renderRectangle(Rectangle rectangle, int xZoom, int yZoom) {
+    public void renderRectangle(Rectangle rectangle, int xZoom, int yZoom, boolean fixed) {
         int[] rectanglePixels = rectangle.getPixels();
         if (rectanglePixels != null) {
-            renderPixelsArrays(rectanglePixels, rectangle.getWidth(), rectangle.getHeight(), rectangle.getX(), rectangle.getY(), xZoom, yZoom);
+            renderPixelsArrays(rectanglePixels, rectangle.getWidth(), rectangle.getHeight(), rectangle.getX(), rectangle.getY(), xZoom, yZoom, fixed);
         }
     }
 
-    public void renderSprite(Sprite sprite, int xPosition, int yPosition, int xZoom, int yZoom) {
-        renderPixelsArrays(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPosition, yPosition, xZoom, yZoom);
+    public void renderSprite(Sprite sprite, int xPosition, int yPosition, int xZoom, int yZoom, boolean fixed) {
+        renderPixelsArrays(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPosition, yPosition, xZoom, yZoom, fixed);
     }
 
-    public void renderPixelsArrays(int[] renderPixels, int renderWidth, int renderHeight, int xPosition, int yPosition, int xZoom, int yZoom) {
+    public void renderPixelsArrays(int[] renderPixels, int renderWidth, int renderHeight, int xPosition, int yPosition, int xZoom, int yZoom, boolean fixed) {
         for (int y = 0; y < renderHeight; y++) {
             for (int x = 0; x < renderWidth; x++) {
                 for (int yZ = 0; yZ < yZoom; yZ++) {
@@ -49,24 +49,30 @@ public class RenderHandler {
                         int pixel = renderPixels[renderWidth * y + x];
                         int xPos = (x * xZoom + xZ + xPosition);
                         int yPos = (y * yZoom + yZ + yPosition);
-                        setPixel(pixel, xPos, yPos);
+                        setPixel(pixel, xPos, yPos, fixed);
                     }
                 }
             }
         }
     }
 
-    public void setPixel(int pixel, int x, int y) {
-        if (isInRangeOfCamera(x, y)) {
-            int pixelIndex = (x - camera.getX()) + (y - camera.getY()) * view.getWidth();
-            if (isInGlobalRange(pixelIndex) && !isAlphaColor(pixel)) {
-                pixels[pixelIndex] = pixel;
+    public void setPixel(int pixel, int x, int y, boolean fixed) {
+        int pixelIndex = 0;
+        if (!fixed && isInRangeOfCamera(x, y)) {
+            pixelIndex = (x - camera.getX()) + (y - camera.getY()) * view.getWidth();
+        }
+        if (fixed) {
+            if (x >= 0 && y >=0 && x <= camera.getWidth() && y <= camera.getHeight()) {
+                pixelIndex = x + y * view.getWidth();
             }
+        }
+        if (isInGlobalRange(pixelIndex) && !isAlphaColor(pixel)) {
+            pixels[pixelIndex] = pixel;
         }
     }
 
     private boolean isAlphaColor(int pixel) {
-        return pixel == Game.ALPHA;
+        return pixel == Game.ALPHA || pixel == 0x7fdf06 || pixel == 0x80ff06;
     }
 
     private boolean isInGlobalRange(int pixelIndex) {

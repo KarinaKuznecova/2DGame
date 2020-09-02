@@ -32,7 +32,7 @@ public class Tiles {
 
     public void renderTile(int tileIndex, RenderHandler renderer, int xPosition, int yPosition, int xZoom, int yZoom) {
         if (tileIndex >= 0 && tileList.size() > tileIndex) {
-            renderer.renderSprite(tileList.get(tileIndex).getSprite(), xPosition, yPosition, xZoom, yZoom);
+            renderer.renderSprite(tileList.get(tileIndex).getSprite(), xPosition, yPosition, xZoom, yZoom, false);
         } else {
             System.out.println("tileIndex: " + tileIndex + " is out of bounds");
         }

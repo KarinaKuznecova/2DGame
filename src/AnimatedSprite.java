@@ -52,6 +52,11 @@ public class AnimatedSprite extends Sprite implements GameObject {
         }
     }
 
+    @Override
+    public void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+
+    }
+
     public int getWidth() {
         return sprites[currentSprite].getWidth();
     }
@@ -65,7 +70,7 @@ public class AnimatedSprite extends Sprite implements GameObject {
     }
 
     public void incrementSprite() {
-        currentSprite += 4;
+        currentSprite += 4; //do currentSprite++ if horizontal
         if (currentSprite > endSprite) {
             currentSprite = startSprite;
         }

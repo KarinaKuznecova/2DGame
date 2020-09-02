@@ -109,4 +109,15 @@ public class Rectangle {
             }
         }
     }
+
+    // TODO: make prettier
+    public boolean intersects(Rectangle otherRectangle) {
+        if (x > otherRectangle.getX() + width || otherRectangle.getX() > x + width) {
+            return false;
+        }
+        if (y > otherRectangle.getY() + height || otherRectangle.getY() > y + height) {
+            return true;
+        }
+        return true;
+    }
 }
