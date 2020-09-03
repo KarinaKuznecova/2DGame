@@ -38,6 +38,18 @@ public class Tiles {
         }
     }
 
+    public int size() {
+        return tileList.size();
+    }
+
+    public Sprite[] getSprites() {
+        Sprite[] sprites = new Sprite[size()];
+        for (int i=0; i< sprites.length; i++) {
+            sprites[i] = tileList.get(i).getSprite();
+        }
+        return sprites;
+    }
+
     class Tile {
         public String tileName;
         public Sprite sprite;

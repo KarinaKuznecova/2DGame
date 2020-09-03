@@ -61,6 +61,7 @@ public class Rectangle {
         this.pixels = pixels;
     }
 
+    @Deprecated
     public void generateGraphics(int color) {
         pixels = new int[width * height];
         for (int i = 0; i < height; i++) {
@@ -83,6 +84,7 @@ public class Rectangle {
         }
     }
 
+    @Deprecated
     public void generateGraphicsAsInVideo(int borderWidth, int color) {
         pixels = new int[width * height];
         for (int i = 0; i < borderWidth; i++) {
@@ -112,12 +114,23 @@ public class Rectangle {
 
     // TODO: make prettier
     public boolean intersects(Rectangle otherRectangle) {
-        if (x > otherRectangle.getX() + width || otherRectangle.getX() > x + width) {
+        if (x > otherRectangle.getX() + otherRectangle.getWidth() || otherRectangle.getX() > x + width) {
             return false;
         }
-        if (y > otherRectangle.getY() + height || otherRectangle.getY() > y + height) {
-            return true;
+        if (y > otherRectangle.getY() + otherRectangle.getHeight() || otherRectangle.getY() > y + height) {
+            return false;
         }
         return true;
     }
+
+//    // TODO: make prettier
+//    public boolean intersects(Rectangle otherRectangle) {
+//        if (x > otherRectangle.getX() + otherRectangle.getWidth() || otherRectangle.getX() > x + width) {
+//            return false;
+//        }
+//        if (y > otherRectangle.getY() + otherRectangle.getHeight() || otherRectangle.getY() > y + height) {
+//            return false;
+//        }
+//        return true;
+//    }
 }

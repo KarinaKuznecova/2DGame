@@ -6,6 +6,7 @@ public interface GameObject {
     //called 60fps
     void update(Game game);
 
-    void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom);
+    //Return true to stop checking other clicks.
+    boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom);
 
 }

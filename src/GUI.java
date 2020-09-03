@@ -31,7 +31,7 @@ public class GUI implements GameObject {
             renderer.renderSprite(backgroundSprite, rectangle.getX(), rectangle.getY(), xZoom, yZoom, fixedOnScreen);
         }
         for (GUIButton button : buttons) {
-            button.render(renderer, xZoom, yZoom);
+            button.render(renderer, xZoom, yZoom, rectangle);
         }
 
     }
@@ -44,18 +44,25 @@ public class GUI implements GameObject {
     }
 
     @Override
-    public void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+    public boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+        boolean stopChecking = false;
+
         if (!fixedOnScreen) {
             mouseRectangle = new Rectangle(mouseRectangle.getX() + camera.getX(), mouseRectangle.getY() + camera.getY(), 1, 1);
+        } else {
+            mouseRectangle = new Rectangle(mouseRectangle.getX(), mouseRectangle.getY(), 1, 1);
         }
 
         if (rectangle.getWidth() == 0 || rectangle.getHeight() == 0 || mouseRectangle.intersects(rectangle)) {
+            mouseRectangle.setX(mouseRectangle.getX() - rectangle.getX());
+            mouseRectangle.setY(mouseRectangle.getY() - rectangle.getY());
             for (GUIButton button : buttons) {
-                mouseRectangle.setX(mouseRectangle.getX() + rectangle.getX());
-                mouseRectangle.setY(mouseRectangle.getY() + rectangle.getY());
-                button.handleMouseClick(mouseRectangle, camera, xZoom, yZoom);
+                boolean result = button.handleMouseClick(mouseRectangle, camera, xZoom, yZoom);
+                if (!stopChecking) {
+                    stopChecking = result;
+                }
             }
         }
-
+        return stopChecking;
     }
 }

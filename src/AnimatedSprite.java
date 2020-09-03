@@ -53,8 +53,8 @@ public class AnimatedSprite extends Sprite implements GameObject {
     }
 
     @Override
-    public void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
-
+    public boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+        return false;
     }
 
     public int getWidth() {

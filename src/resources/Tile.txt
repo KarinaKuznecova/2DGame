@@ -3,3 +3,5 @@ Grass-22-5
 Dirt-17-5
 Dirt2-16-5
 Flowers-22-11
+Water-22-17
+Brick-22-22

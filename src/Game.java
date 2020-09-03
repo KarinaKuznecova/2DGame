@@ -25,6 +25,8 @@ public class Game extends JFrame implements Runnable {
 
     private AnimatedSprite playerAnimations;
 
+    private int selectedTileId = 2;
+
     private KeyboardListener keyboardListener = new KeyboardListener(this);
     private MouseEventListener mouseEventListener = new MouseEventListener(this);
 
@@ -66,11 +68,24 @@ public class Game extends JFrame implements Runnable {
         //load map
         gameMap = new GameMap(new File("src/resources/Map.txt"), tiles);
 
+        //Load SDK GUI
+        GUIButton[] buttons = new GUIButton[tiles.size()];
+        Sprite[] tileSprites = tiles.getSprites();
+
+        for (int i = 0; i < buttons.length; i++) {
+            Rectangle tileRectangle = new Rectangle(0, i * (TILE_SIZE * ZOOM + 2), TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);
+//            Rectangle tileRectangle = new Rectangle(i * (TILE_SIZE * ZOOM + 2),0, TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);  //horizontal on top
+            buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
+        }
+
+        GUI gui = new GUI(buttons, 5, 5, true);
+
         //TODO: make it prettier
         //load objects
-        gameObjects = new GameObject[1];
+        gameObjects = new GameObject[2];
         player = new Player(playerAnimations);
         gameObjects[0] = player;
+        gameObjects[1] = gui;
 
         //adding listeners
         canvas.addKeyListener(keyboardListener);
@@ -142,18 +157,24 @@ public class Game extends JFrame implements Runnable {
         return null;
     }
 
+    public void changeTile(int tileId) {
+        selectedTileId = tileId;
+    }
+
     public void leftClick(int x, int y) {
         Rectangle mouseRectangle = new Rectangle(x, y, 1, 1);
         boolean stoppedChecking = false;
 
-        for (GameObject gameObject : gameObjects)
-            if (!stoppedChecking)
-//                stoppedChecking = gameObject.handleMouseClick(mouseRectangle, renderer.getCamera(), ZOOM, ZOOM);
-
+        for (GameObject gameObject : gameObjects) {
+            if (!stoppedChecking) {
+                stoppedChecking = gameObject.handleMouseClick(mouseRectangle, renderer.getCamera(), ZOOM, ZOOM);
+            }
+        }
         if (!stoppedChecking) {
             x = (int) Math.floor((x + renderer.getCamera().getX()) / (32.0 * ZOOM));
             y = (int) Math.floor((y + renderer.getCamera().getY()) / (32.0 * ZOOM));
-            gameMap.setTile(x, y, 2);
+            gameMap.setTile(x, y, selectedTileId);
+
         }
     }
 
@@ -179,5 +200,9 @@ public class Game extends JFrame implements Runnable {
 
     public MouseEventListener getMouseEventListener() {
         return mouseEventListener;
+    }
+
+    public int getSelectedTileId() {
+        return selectedTileId;
     }
 }

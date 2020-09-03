@@ -37,6 +37,13 @@ public class RenderHandler {
         }
     }
 
+    public void renderRectangle(Rectangle rectangle, Rectangle rectangleOffset, int xZoom, int yZoom, boolean fixed) {
+        int[] rectanglePixels = rectangle.getPixels();
+        if (rectanglePixels != null) {
+            renderPixelsArrays(rectanglePixels, rectangle.getWidth(), rectangle.getHeight(), rectangle.getX() + rectangleOffset.getX(), rectangle.getY() + rectangleOffset.getY(), xZoom, yZoom, fixed);
+        }
+    }
+
     public void renderSprite(Sprite sprite, int xPosition, int yPosition, int xZoom, int yZoom, boolean fixed) {
         renderPixelsArrays(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPosition, yPosition, xZoom, yZoom, fixed);
     }
@@ -72,7 +79,7 @@ public class RenderHandler {
     }
 
     private boolean isAlphaColor(int pixel) {
-        return pixel == Game.ALPHA || pixel == 0x7fdf06 || pixel == 0x80ff06;
+        return pixel == Game.ALPHA;
     }
 
     private boolean isInGlobalRange(int pixelIndex) {

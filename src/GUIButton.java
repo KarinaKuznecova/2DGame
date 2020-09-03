@@ -12,7 +12,11 @@ public abstract class GUIButton implements GameObject {
 
     @Override
     public void render(RenderHandler renderer, int xZoom, int yZoom) {
-        renderer.renderSprite(sprite, region.getX(), region.getY(), xZoom, yZoom, fixed);
+//        renderer.renderSprite(sprite, region.getX(), region.getY(), xZoom, yZoom, fixed);
+    }
+
+    public void render(RenderHandler renderer, int xZoom, int yZoom, Rectangle interfaceRect) {
+        renderer.renderSprite(sprite, region.getX() + interfaceRect.getX(), region.getY() + interfaceRect.getY(), xZoom, yZoom, fixed);
     }
 
     @Override
@@ -21,10 +25,12 @@ public abstract class GUIButton implements GameObject {
     }
 
     @Override
-    public void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+    public boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
         if (mouseRectangle.intersects(region)) {
             activate();
+            return true;
         }
+        return false;
     }
 
     public abstract void activate();

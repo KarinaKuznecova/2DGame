@@ -77,8 +77,8 @@ public class Player implements GameObject {
     }
 
     @Override
-    public void handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
-
+    public boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) {
+        return false;
     }
 
     public void updateCamera(Rectangle camera) {
