@@ -122,15 +122,4 @@ public class Rectangle {
         }
         return true;
     }
-
-//    // TODO: make prettier
-//    public boolean intersects(Rectangle otherRectangle) {
-//        if (x > otherRectangle.getX() + otherRectangle.getWidth() || otherRectangle.getX() > x + width) {
-//            return false;
-//        }
-//        if (y > otherRectangle.getY() + otherRectangle.getHeight() || otherRectangle.getY() > y + height) {
-//            return false;
-//        }
-//        return true;
-//    }
 }

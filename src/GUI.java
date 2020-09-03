@@ -15,9 +15,6 @@ public class GUI implements GameObject {
         if (backgroundSprite != null) {
             rectangle.setHeight(backgroundSprite.getHeight());
             rectangle.setWidth(backgroundSprite.getWidth());
-        } else {
-            rectangle.setWidth(Game.TILE_SIZE);
-            rectangle.setHeight(Game.TILE_SIZE);
         }
     }
 

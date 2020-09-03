@@ -73,8 +73,8 @@ public class Game extends JFrame implements Runnable {
         Sprite[] tileSprites = tiles.getSprites();
 
         for (int i = 0; i < buttons.length; i++) {
-            Rectangle tileRectangle = new Rectangle(0, i * (TILE_SIZE * ZOOM + 2), TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);
-//            Rectangle tileRectangle = new Rectangle(i * (TILE_SIZE * ZOOM + 2),0, TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);  //horizontal on top
+//            Rectangle tileRectangle = new Rectangle(0, i * (TILE_SIZE * ZOOM + 2), TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);       // vertical on top left side
+            Rectangle tileRectangle = new Rectangle(i * (TILE_SIZE * ZOOM + 2),0, TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);  //horizontal on top left
             buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
         }
 

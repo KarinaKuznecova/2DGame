@@ -11,17 +11,6 @@ public class SDKButton extends GUIButton {
         rectangle.generateGraphics(3, 0xFFDB3D);
     }
 
-//    @Override
-//    public void render(RenderHandler renderer, int xZoom, int yZoom, Rectangle interfaceRect) {
-//        renderer.renderRectangle(region, interfaceRect, 1, 1, fixed);
-//        renderer.renderSprite(sprite,
-//                region.getX() + interfaceRect.getX() + (xZoom - (xZoom - 1))*region.getWidth()/2/xZoom,
-//                region.getY() + interfaceRect.getY() + (yZoom - (yZoom - 1))*region.getHeight()/2/yZoom,
-//                xZoom - 1,
-//                yZoom - 1,
-//                fixed);
-//    }
-
     @Override
     public void render(RenderHandler renderer, int xZoom, int yZoom, Rectangle interfaceRect) {
         renderer.renderSprite(sprite,

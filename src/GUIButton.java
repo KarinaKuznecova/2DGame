@@ -11,9 +11,7 @@ public abstract class GUIButton implements GameObject {
     }
 
     @Override
-    public void render(RenderHandler renderer, int xZoom, int yZoom) {
-//        renderer.renderSprite(sprite, region.getX(), region.getY(), xZoom, yZoom, fixed);
-    }
+    public void render(RenderHandler renderer, int xZoom, int yZoom) {}
 
     public void render(RenderHandler renderer, int xZoom, int yZoom, Rectangle interfaceRect) {
         renderer.renderSprite(sprite, region.getX() + interfaceRect.getX(), region.getY() + interfaceRect.getY(), xZoom, yZoom, fixed);
