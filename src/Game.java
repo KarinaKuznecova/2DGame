@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -35,7 +37,7 @@ public class Game extends JFrame implements Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Set the position and size of our frame x/y/width/height.
-        setBounds(0, 0, 1000, 800);
+        setBounds(0, 0, 1300, 700);
 
         //Put our frame in the center of the screen.
         setLocationRelativeTo(null);
@@ -92,6 +94,36 @@ public class Game extends JFrame implements Runnable {
         canvas.addFocusListener(keyboardListener);
         canvas.addMouseListener(mouseEventListener);
         canvas.addMouseMotionListener(mouseEventListener);
+
+        canvas.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int newWidth = canvas.getWidth();
+                int newHeight = canvas.getHeight();
+
+                if(newWidth > renderer.getMaxWidth())
+                    newWidth = renderer.getMaxWidth();
+
+                if(newHeight > renderer.getMaxHeight())
+                    newHeight = renderer.getMaxHeight();
+
+                renderer.getCamera().setWidth(newWidth);
+                renderer.getCamera().setHeight(newHeight);
+                canvas.setSize(newWidth, newHeight);
+                pack();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {}
+
+            @Override
+            public void componentShown(ComponentEvent e) {}
+
+            @Override
+            public void componentHidden(ComponentEvent e) {}
+        });
+
+        canvas.requestFocus();
     }
 
     public static void main(String[] args) {

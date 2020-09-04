@@ -8,10 +8,24 @@ public class RenderHandler {
     private BufferedImage view;
     private int[] pixels;
     private Rectangle camera;
+    private int maxScreenWidth;
+    private int maxScreenHeight;
 
     public RenderHandler(int width, int height) {
+
+        //TODO move to separate method
+        GraphicsDevice[] graphicsDevices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+        for (GraphicsDevice device : graphicsDevices) {
+            if (maxScreenWidth < device.getDisplayMode().getWidth()) {
+                maxScreenWidth = device.getDisplayMode().getWidth();
+            }
+            if (maxScreenHeight < device.getDisplayMode().getHeight()) {
+                maxScreenHeight = device.getDisplayMode().getHeight();
+            }
+        }
+
         //Create a BufferedImage that will represent our view.
-        view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        view = new BufferedImage(maxScreenWidth, maxScreenHeight, BufferedImage.TYPE_INT_RGB);
 
         camera = new Rectangle(0, 0, width, height);
 
@@ -21,7 +35,7 @@ public class RenderHandler {
 
     // renders our pixels to the screen
     public void render(Graphics graphics) {
-        graphics.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
+        graphics.drawImage(view.getSubimage( 0, 0, camera.getWidth(), camera.getHeight()), 0,0, camera.getWidth(), camera.getHeight(), null);
     }
 
     // render our image to array of all pixels
@@ -99,5 +113,13 @@ public class RenderHandler {
 
     public void clear() {
         Arrays.fill(pixels, 0);
+    }
+
+    public int getMaxWidth() {
+        return maxScreenWidth;
+    }
+
+    public int getMaxHeight() {
+        return maxScreenHeight;
     }
 }
