@@ -13,7 +13,18 @@ public class RenderHandler {
 
     public RenderHandler(int width, int height) {
 
-        //TODO move to separate method
+        setSizeBasedOnScreenSize();
+
+        //Create a BufferedImage that will represent our view.
+        view = new BufferedImage(maxScreenWidth, maxScreenHeight, BufferedImage.TYPE_INT_RGB);
+
+        camera = new Rectangle(0, 0, width, height);
+
+        //Create an array for pixels
+        pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
+    }
+
+    private void setSizeBasedOnScreenSize() {
         GraphicsDevice[] graphicsDevices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
         for (GraphicsDevice device : graphicsDevices) {
             if (maxScreenWidth < device.getDisplayMode().getWidth()) {
@@ -23,14 +34,6 @@ public class RenderHandler {
                 maxScreenHeight = device.getDisplayMode().getHeight();
             }
         }
-
-        //Create a BufferedImage that will represent our view.
-        view = new BufferedImage(maxScreenWidth, maxScreenHeight, BufferedImage.TYPE_INT_RGB);
-
-        camera = new Rectangle(0, 0, width, height);
-
-        //Create an array for pixels
-        pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
     }
 
     // renders our pixels to the screen

@@ -4,9 +4,7 @@ public class Player implements GameObject {
     private Sprite sprite;
     private AnimatedSprite animatedSprite = null;
     private int speed = 10;
-    //TODO: make it as enum
-    //0 - down, 1 - left, 2 - up, 3 - right
-    private int direction;
+    private Direction direction;
 
     public Player(Sprite playerSprite) {
         this.sprite = playerSprite;
@@ -34,30 +32,29 @@ public class Player implements GameObject {
         KeyboardListener keyboardListener = game.getKeyboardListener();
 
         boolean isMoving = false;
-        int newDirection = direction;
+        Direction newDirection = direction;
 
-        // TODO: refactor
         if (keyboardListener.left()) {
             playerRectangle.setX(playerRectangle.getX() - speed);
-            newDirection = 1;
+            newDirection = Direction.LEFT;
             isMoving = true;
         }
 
         if (keyboardListener.right()) {
             playerRectangle.setX(playerRectangle.getX() + speed);
-            newDirection = 3;
+            newDirection = Direction.RIGHT;
             isMoving = true;
         }
 
         if (keyboardListener.up()) {
             playerRectangle.setY(playerRectangle.getY() - speed);
-            newDirection = 2;
+            newDirection = Direction.UP;
             isMoving = true;
         }
 
         if (keyboardListener.down()) {
             playerRectangle.setY(playerRectangle.getY() + speed);
-            newDirection = 0;
+            newDirection = Direction.DOWN;
             isMoving = true;
         }
 
@@ -87,8 +84,8 @@ public class Player implements GameObject {
     }
 
     private void updateDirection() {
-        if (animatedSprite != null) {
-            animatedSprite.setAnimationRange(direction, direction + 12);
+        if (animatedSprite != null && direction != null) {
+            animatedSprite.setAnimationRange(direction.directionNumber, direction.directionNumber + 12);
 //            animatedSprite.setAnimationRange((direction * 4), (direction * 4 + 4)); //if horizontal increase
         }
     }

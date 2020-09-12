@@ -112,14 +112,15 @@ public class Rectangle {
         }
     }
 
-    // TODO: make prettier
     public boolean intersects(Rectangle otherRectangle) {
-        if (x > otherRectangle.getX() + otherRectangle.getWidth() || otherRectangle.getX() > x + width) {
-            return false;
-        }
-        if (y > otherRectangle.getY() + otherRectangle.getHeight() || otherRectangle.getY() > y + height) {
-            return false;
-        }
-        return true;
+        return (intersectsByX(otherRectangle) && intersectsByY(otherRectangle));
+    }
+
+    private boolean intersectsByY(Rectangle otherRectangle) {
+        return !(y > otherRectangle.getY() + otherRectangle.getHeight() || otherRectangle.getY() > y + height);
+    }
+
+    private boolean intersectsByX(Rectangle otherRectangle) {
+        return !(x > otherRectangle.getX() + otherRectangle.getWidth() || otherRectangle.getX() > x + width);
     }
 }

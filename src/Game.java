@@ -24,6 +24,7 @@ public class Game extends JFrame implements Runnable {
     private GameMap gameMap;
     private GameObject[] gameObjects;
     private Player player;
+    private GUIButton[] buttons;
 
     private AnimatedSprite playerAnimations;
 
@@ -53,43 +54,14 @@ public class Game extends JFrame implements Runnable {
 
         renderer = new RenderHandler(getWidth(), getHeight());
 
-        //load assets
-        BufferedImage bufferedImage = loadImage("resources/img/terrain.png");
-        sheet = new SpriteSheet(bufferedImage);
-        sheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
+        loadEverything();
 
-        // loading player animated image
-        BufferedImage playerSheetImage = loadImage("resources/img/betty.png");
-        playerSheet = new SpriteSheet(playerSheetImage);
-        playerSheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
-        playerAnimations = new AnimatedSprite(playerSheet, 5);
+        addListeners();
 
-        //load tiles
-        tiles = new Tiles(new File("src/resources/Tile.txt"), sheet);
+        canvas.requestFocus();
+    }
 
-        //load map
-        gameMap = new GameMap(new File("src/resources/Map.txt"), tiles);
-
-        //Load SDK GUI
-        GUIButton[] buttons = new GUIButton[tiles.size()];
-        Sprite[] tileSprites = tiles.getSprites();
-
-        for (int i = 0; i < buttons.length; i++) {
-//            Rectangle tileRectangle = new Rectangle(0, i * (TILE_SIZE * ZOOM + 2), TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);       // vertical on top left side
-            Rectangle tileRectangle = new Rectangle(i * (TILE_SIZE * ZOOM + 2),0, TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);  //horizontal on top left
-            buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
-        }
-
-        GUI gui = new GUI(buttons, 5, 5, true);
-
-        //TODO: make it prettier
-        //load objects
-        gameObjects = new GameObject[2];
-        player = new Player(playerAnimations);
-        gameObjects[0] = player;
-        gameObjects[1] = gui;
-
-        //adding listeners
+    private void addListeners() {
         canvas.addKeyListener(keyboardListener);
         canvas.addFocusListener(keyboardListener);
         canvas.addMouseListener(mouseEventListener);
@@ -101,10 +73,10 @@ public class Game extends JFrame implements Runnable {
                 int newWidth = canvas.getWidth();
                 int newHeight = canvas.getHeight();
 
-                if(newWidth > renderer.getMaxWidth())
+                if (newWidth > renderer.getMaxWidth())
                     newWidth = renderer.getMaxWidth();
 
-                if(newHeight > renderer.getMaxHeight())
+                if (newHeight > renderer.getMaxHeight())
                     newHeight = renderer.getMaxHeight();
 
                 renderer.getCamera().setWidth(newWidth);
@@ -114,16 +86,63 @@ public class Game extends JFrame implements Runnable {
             }
 
             @Override
-            public void componentMoved(ComponentEvent e) {}
+            public void componentMoved(ComponentEvent e) {
+            }
 
             @Override
-            public void componentShown(ComponentEvent e) {}
+            public void componentShown(ComponentEvent e) {
+            }
 
             @Override
-            public void componentHidden(ComponentEvent e) {}
+            public void componentHidden(ComponentEvent e) {
+            }
         });
+    }
 
-        canvas.requestFocus();
+    private void loadEverything() {
+        loadSpriteSheet();
+        loadPlayerAnimatedImages();
+
+        tiles = new Tiles(new File("src/resources/Tile.txt"), sheet);
+
+        gameMap = new GameMap(new File("src/resources/Map.txt"), tiles);
+
+        loadSDKGUI();
+        loadGameObjects();
+    }
+
+    private void loadSpriteSheet() {
+        BufferedImage bufferedImage = loadImage("resources/img/terrain.png");
+        sheet = new SpriteSheet(bufferedImage);
+        sheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
+    }
+
+    private void loadPlayerAnimatedImages() {
+        BufferedImage playerSheetImage = loadImage("resources/img/betty.png");
+        playerSheet = new SpriteSheet(playerSheetImage);
+        playerSheet.loadSprites(TILE_SIZE, TILE_SIZE, 0);
+        playerAnimations = new AnimatedSprite(playerSheet, 5);
+    }
+
+    private void loadSDKGUI() {
+        GUIButton[] buttons = new GUIButton[tiles.size()];
+        Sprite[] tileSprites = tiles.getSprites();
+
+        for (int i = 0; i < buttons.length; i++) {
+//            Rectangle tileRectangle = new Rectangle(0, i * (TILE_SIZE * ZOOM + 2), TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);       // vertical on top left side
+            Rectangle tileRectangle = new Rectangle(i * (TILE_SIZE * ZOOM + 2), 0, TILE_SIZE * ZOOM, TILE_SIZE * ZOOM);  //horizontal on top left
+            buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
+        }
+        this.buttons = buttons;
+    }
+
+    private void loadGameObjects() {
+        GUI gui = new GUI(buttons, 5, 5, true);
+        player = new Player(playerAnimations);
+
+        gameObjects = new GameObject[2];
+        gameObjects[0] = player;
+        gameObjects[1] = gui;
     }
 
     public static void main(String[] args) {
@@ -228,10 +247,6 @@ public class Game extends JFrame implements Runnable {
 
     public RenderHandler getRenderer() {
         return renderer;
-    }
-
-    public MouseEventListener getMouseEventListener() {
-        return mouseEventListener;
     }
 
     public int getSelectedTileId() {
